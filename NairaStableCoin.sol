@@ -1,3 +1,4 @@
+// SPDX-License-Identifier: LICENSED
 pragma solidity ^0.8.0;
 
 contract Naira {
@@ -5,7 +6,12 @@ contract Naira {
     string public constant name = "Naira";
     string public constant symbol = "NGN";
     uint256 public constant decimals = 18;
-    uint256 public constant totalSupply = 400000000000000000000000000;
+
+    // Declare a public variable named "totalSupply" of type uint256
+    // Initialize it with a value of 400000000000000000000000000
+    
+    uint256 public totalSupply = 400000000000000000000000000;
+
     uint256 public constant pegValue = 22000000000000000000;
 
     // Variables
@@ -18,8 +24,8 @@ contract Naira {
     // Events
     event Transfer(address indexed from, address indexed to, uint256 value);
     event Approval(address indexed owner, address indexed spender, uint256 value);
-    event BlacklistedAddress(address indexed address);
-    event UnblacklistedAddress(address indexed address);
+    event BlacklistedAddress(address indexed, address);
+    event UnblacklistedAddress(address indexed, address);
     event TradeEnabled();
     event TradeDisabled();
     event Mint(address indexed to, uint256 amount);
@@ -60,16 +66,18 @@ contract Naira {
         balances[owner] = 0;
     }
 
-    function blacklistAddress(address addressToBlacklist) public {
+  
+ function blacklistAddress(address addressToBlacklist) public {
         require(msg.sender == address(this), "Only contract owner can blacklist an address");
         blacklisted[addressToBlacklist] = true;
-        emit BlacklistedAddress(addressToBlacklist);
+        emit BlacklistedAddress(addressToBlacklist, msg.sender);
     }
 
     function unblacklistAddress(address addressToUnblacklist) public {
         require(msg.sender == address(this), "Only contract owner can unblacklist an address");
         blacklisted[addressToUnblacklist] = false;
-        emit UnblacklistedAddress(addressToUnblacklist);
+        emit UnblacklistedAddress(addressToUnblacklist, msg.sender);
+
     }
 
 function enableTrade() public {
